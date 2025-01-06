@@ -42,6 +42,7 @@
                 unzip
                 toolchain
                 cargo-nextest
+                rust-analyzer
               ];
             };
           };
