@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [master, main]
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'crates/**'
+      - '.env.example'
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'rust-toolchain'
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: setup rust
+        shell: bash
+        run: |
+          rustup set auto-self-update disable
+          rustup toolchain install stable --profile minimal
+          rustup component add rustfmt clippy
+      - name: check
+        run: |
+          cargo fmt --check
+          cargo test
