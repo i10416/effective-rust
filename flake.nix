@@ -42,6 +42,8 @@
                 unzip
                 toolchain
                 cargo-nextest
+                cargo-bloat
+                taplo
                 rust-analyzer
               ];
             };
