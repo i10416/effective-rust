@@ -1,0 +1,5 @@
+[package]
+name = "chapter_01"
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
