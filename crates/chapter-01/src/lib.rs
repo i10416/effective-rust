@@ -1,3 +1,7 @@
+use std::io;
+
+use thiserror::Error;
+
 #[allow(unused)]
 fn function_with_poly_arguments_compiles() {
     #[derive(Debug)]
@@ -32,4 +36,56 @@ fn conversion_between_numeric_primitives() {
     // it won't compile.
     // let the_another: i32 = another.into();
     // => the trait bound `i32: From<i64>` is not satisfied
+}
+
+#[allow(unused)]
+fn function_implicit_conversion() {
+    fn sum(x: i32, y: i32) -> i32 {
+        x + y
+    }
+    let op: fn(i32, i32) -> i32 = sum;
+}
+
+#[allow(unused)]
+fn closure_fn_trait() {
+    fn take_callback<F>(f: F)
+    where
+        F: Fn(i32) -> (),
+    {
+        let _ = f(1);
+    }
+    take_callback(|v| println!("{v}"));
+}
+
+#[derive(Error, Debug)]
+#[allow(unused)]
+enum ErrorKind {
+    #[error("resource not found at {location}")]
+    NotFound { location: String },
+    #[error("data corruption: hint: {hint:?}")]
+    DataCorruption { hint: Option<String> },
+    #[error("{0}")]
+    IOFailure(#[from] io::Error),
+}
+
+#[allow(unused)]
+fn this_error_derives_std_error_that_enables_short_circuit_behavior(
+) -> Result<(), Box<dyn std::error::Error>> {
+    let it = Err(ErrorKind::NotFound {
+        location: "area 51".to_string(),
+    })?; // conversion from ErrorKind::NotFound to Box<std::error::Error>
+    Ok(())
+}
+
+#[cfg(test)]
+#[test]
+fn error_handling_by_this_error() {
+    let error = ErrorKind::NotFound {
+        location: "area 51".to_string(),
+    };
+    assert_eq!(
+        format!("{error}"),
+        "resource not found at area 51",
+        "thiserror derives Display implementation"
+    );
 }
