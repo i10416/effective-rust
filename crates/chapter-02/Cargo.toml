@@ -1,0 +1,19 @@
+[package]
+name = "chapter_02"
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+
+[features]
+default = ["dynamic", "static"]
+dynamic = []
+static = []
+
+[dependencies]
+
+[dev-dependencies]
+criterion = "0.5.1"
+
+[[bench]]
+name = "dispatch"
+harness = false

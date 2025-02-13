@@ -1,0 +1,10 @@
+[package]
+name = "chapter_02_bin_dynamic"
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+
+[dependencies]
+chapter_02 = { path = "../chapter-02", default-features = false, features = [
+    "dynamic",
+] }

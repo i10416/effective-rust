@@ -1,0 +1,9 @@
+[package]
+name = "chapter_02_bin_static"
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+[dependencies]
+chapter_02 = { path = "../chapter-02", default-features = false, features = [
+    "static",
+] }
